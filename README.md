@@ -36,6 +36,19 @@ choose **Open**, then **Open** again, or run:
 xattr -dr com.apple.quarantine "SNI Launcher.app"
 ```
 
+## Windows
+
+`SNI-Launcher-v<version>-windows-x64.zip` has `SNI Launcher.exe` (same buttons as the macOS app) next to SNI
+and SNFM from the [CVW-HMB/sni `v0.0.104-fxpak1`](https://github.com/CVW-HMB/sni/releases/tag/v0.0.104-fxpak1)
+release. Unzip it anywhere and run `SNI Launcher.exe`.
+
+- The `manage_files.exe` in the Windows zip is upstream's build; the SNFM fixes above are not in it yet,
+  because the Windows build needs Visual Studio.
+- `manage_files.exe` needs the [Microsoft Visual C++ Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe).
+  Without it, it does not start.
+- The exes are not code-signed, so Windows SmartScreen may warn the first time: choose **More info**, then
+  **Run anyway**.
+
 ## Building
 
 The scripts expect sibling checkouts:
@@ -55,6 +68,10 @@ autoconf-archive libtool`.
 ./build-snfm.sh          # universal SNFM.app; the first run builds gRPC, protobuf and wxWidgets
 ./build.sh --zip         # SNI Launcher.app plus the release zip in out/
 ./build.sh --install     # also copy it to the Desktop
+./build-windows.sh       # Windows zip in out/; SNFM_EXE=path/to/manage_files.exe swaps in another SNFM
 ```
+
+`build-windows.sh` cross-compiles the launcher in `windows/` (Go, lxn/walk) and needs `go-winres`
+(`go install github.com/tc-hib/go-winres@latest`).
 
 The version comes from `VERSION`.
